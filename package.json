@@ -2,7 +2,7 @@
   "name": "backend2",
   "version": "1.0.0",
   "description": "",
-  "type":"module",
+  "type": "module",
   "main": "index.js",
   "dependencies": {
     "anymatch": "^3.1.3",
@@ -26,6 +26,7 @@
     "ms": "^2.1.3",
     "normalize-path": "^3.0.0",
     "picomatch": "^2.3.1",
+    "prettier": "^3.3.3",
     "pstree.remy": "^1.1.8",
     "readdirp": "^3.6.0",
     "semver": "^7.6.3",
@@ -39,7 +40,7 @@
     "nodemon": "^3.1.7"
   },
   "scripts": {
-"dev": "nodemon src/index.js"
+    "dev": "nodemon src/index.js"
   },
   "author": "kartike",
   "license": "ISC"
