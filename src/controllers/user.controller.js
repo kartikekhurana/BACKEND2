@@ -168,7 +168,7 @@ return res
 const refreshAcessToken = asyncHandler(async(req,res)=>{
    const incomingRefreshToken =  req.cookies.refreshToken || req.body.refreshToken;
  try {
-      if(incomingRefreshToken){
+      if(!incomingRefreshToken){
        throw new ApiError(401, "unauthorized request")
       }
       const decodedtoken = jwt.verify(incomingRefreshToken,process.env.REFRESH_TOKEN_SECRET);
@@ -207,4 +207,5 @@ export {registerUser,
     loginUser,
     logoutUser,
     refreshAcessToken
+
 };
