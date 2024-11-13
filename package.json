@@ -47,10 +47,10 @@
     "undefsafe": "^2.0.5"
   },
   "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.7",
     "nodemon": "^3.1.7"
   },
   "scripts": {
-    
     "dev": "nodemon -r dotenv/config --experimental-json-modules src/index.js"
   },
   "author": "kartike",
