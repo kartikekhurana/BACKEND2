@@ -1,7 +1,7 @@
 import {asyncHandler} from '../utile/asynchandler.js';
 import { ApiError } from '../utile/apierror.js';
 import {User} from '../models/user.models.js'
-import {uploadOnCloudinary} from '../utile/cloudynary.js';
+import {uploadOnCloudinary , deleteFileFromCloudinary} from '../utile/cloudynary.js';
 import { ApiResponse } from '../utile/apiresponse.js';
 import jwt from "jsonwebtoken";
 
@@ -227,7 +227,7 @@ const updateAccountDetails = asyncHandler(async(req,res)=>{
     if(!fullName || !email){
         throw new ApiError(400,"all fields are required");
     }
-   const user = User.findByIdAndUpdate( 
+   const user = await User.findByIdAndUpdate( 
     req.user?._id,
     {
         $set:{
@@ -261,9 +261,24 @@ if(!avatar.url){
 },{
     new:true
 }).select("-password")
+
+
+const User = await user .findById(req.user?._id);
+const oldAvatarUrl = user?.avatar;
+const newAvatarUrl = avatar.url;
+await user.save();
+if(oldAvatarUrl){
+    await deleteFileFromCloudinary(oldAvatarUrl)
+};
+
+    
+
 return res
 .status(200)
 .json("avatar file is sucessfully uploaded ");
+
+
+
 })
 
 const updateUserCoverImage = asyncHandler(async(req,res)=>{
