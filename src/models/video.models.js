@@ -33,6 +33,14 @@ views:{
 isPublished:{
     type:Boolean,
 default:true,
+},
+cloudinaryUrl:{
+    type:String,
+    required:true,
+},
+cloudinaryId:{
+    type:String,
+    required:true,
 }
 
 
