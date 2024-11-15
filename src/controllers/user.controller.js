@@ -4,6 +4,7 @@ import {User} from '../models/user.models.js'
 import {uploadOnCloudinary , deleteFileFromCloudinary} from '../utile/cloudynary.js';
 import { ApiResponse } from '../utile/apiresponse.js';
 import jwt from "jsonwebtoken";
+import mongoose from 'mongoose';
 
 const generateAccessAndRefreshTokens = async(userId)=>{
     try{
@@ -315,7 +316,7 @@ throw new ApiError(400,"username is missing");
 
  const channel = await User.aggregate([
     {
-$match:username?.toLowerCase()
+$match:{username : username?.toLowerCase()}
     },
     {
 $lookup:{
@@ -336,13 +337,11 @@ $lookup:{
     },
 {
 $addFields:{
-    subscribersCount : {
-        $size : "$subscribers"
-    },
-    channelsSubscribedToCount : {
-        $size : "subscribedTo"
-    },
-    isSubscribed : {
+    subscribers:{$ifNull:["$subscribers",[]]},
+    subscribedTo:{$ifNull:["$subscribedTo",[]]},
+    subscribersCount : {$size :["$subscribers"]},
+    channelsSubscribedToCount : {$size : ["$subscribedTo"]},
+ isSubscribed : {
         $cond : {
             if:{
                 $in : [req.user?._id,"$subscribers.subscriber"]
@@ -366,9 +365,9 @@ else:false
         email:1
     }  
 },
-console.log(channel)
-])
 
+])
+console.log(channel);
 if(!channel?.length){
     throw new ApiError(404,"channel does not exists")
 }
