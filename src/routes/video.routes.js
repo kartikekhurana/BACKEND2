@@ -11,30 +11,23 @@ import { verifyJWT } from "../middlewares/auth.middleware.js";
 import { upload } from "../middlewares/multer.middleware.js";
 
 const router = Router();
-router.use(verifyJWT);
 
-router.route("/").get(verifyJWT, getAllVideos);
+router.route("/").get(getAllVideos);
+
 router.route("/").post(
   upload.fields([
-    {
-      name: "videoFile",
-      maxCount: 1,
-    },
-    {
-      name: "thumbnail",
-      maxCount: 1,
-    },
+    { name: "videoFile", maxCount: 1 },
+    { name: "thumbnail", maxCount: 1 },
   ]),
   publishVideo
 );
 
-
 router
-.route('/:vidoeId')
-.get(verifyJWT,getVideoById)
-.delete(verifyJWT,deleteVideo)
-.patch(upload.single("thumbnail"),updateVideo);
+  .route("/:videoId")
+  .get(getVideoById)
+  .delete(deleteVideo)
+  .patch(upload.single("thumbnail"), updateVideo);
 
-router.route("/toggle/publish/:videoId").patch(verifyJWT,togglePublishStatus);
+router.route("/toggle/publish/:videoId").patch(togglePublishStatus);
 
 export default router;
